@@ -1,4 +1,7 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
+
 #include <ray.h>
 #include <sphere.h>
 #include <hitable.h>
@@ -17,6 +20,9 @@ vec3 color(const ray& r, hitable* world) {
 }
 
 
+float get_random() {
+    return rand() / (float)RAND_MAX;
+}
 
 int main() {
     int nx = 800;
@@ -27,6 +33,7 @@ int main() {
     vec3 horizontal(4.0, 0.0, 0.0);
     vec3 vertical(0.0, 2.0, 0.0);
     vec3 origin(0.0, 0.0, 0.0);
+    srand(time(nullptr));
 
     hitable *list[2];
     list[0] = new sphere(vec3(0, 0, -1), 0.5);
