@@ -6,6 +6,7 @@
 #include <sphere.h>
 #include <hitable.h>
 #include <hitable_list.h>
+#include <camera.h>
 
 
 vec3 color(const ray& r, hitable* world) {
@@ -25,8 +26,8 @@ float get_random() {
 }
 
 int main() {
-    int nx = 800;
-    int ny = 400;
+    int nx = 600;
+    int ny = 300;
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
     vec3 lower_left_corner(-2.0, -1.0, -1.0);
@@ -39,14 +40,15 @@ int main() {
     list[0] = new sphere(vec3(0, 0, -1), 0.5);
     list[1] = new sphere(vec3(0, -100.5, -1), 100);
     hitable *world = new hitable_list(list, 2);
-
+    
+    camera cam;
     for (int j = ny - 1; j >= 0; j--) {
         for (int i = 0; i < nx; i++) {
             vec3 col(0, 0, 0);
             for (int s = 0; s < 50; s++) {
                 float u = float(i + get_random()) / float(nx);
                 float v = float(j + get_random()) / float(ny);
-                ray r(origin, lower_left_corner + (u * horizontal) + (v * vertical));
+                ray r = cam.get_ray(u, v);
                 col += color(r, world);
             }
             col /= float(50);
